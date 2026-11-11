@@ -1,0 +1,964 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Rickelmyn | Consultor de Vendas</title>
+  <meta name="description" content="Rickelmyn, consultor de vendas de imóveis. Seu próximo lar começa aqui: fale comigo no WhatsApp e conheça os empreendimentos da Mundo Apto.">
+  <meta name="theme-color" content="#06281b">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Rickelmyn | Consultor de Vendas">
+  <meta property="og:description" content="Seu próximo lar começa aqui. Encontre o imóvel ideal com quem entende de você.">
+  <!-- IMPORTANTE: depois de publicar, troque "IMG/EU.jpeg" abaixo pelo endereço completo,
+       ex.: https://seu-site.vercel.app/IMG/EU.jpeg (WhatsApp exige link absoluto) -->
+  <meta property="og:image" content="IMG/EU.jpeg">
+  <meta property="og:image:width" content="1254">
+  <meta property="og:image:height" content="1254">
+  <meta property="og:image:alt" content="Rickelmyn, consultor de vendas de imóveis">
+  <meta property="og:locale" content="pt_BR">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:image" content="IMG/EU.jpeg">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2306281b'/%3E%3Cpath d='M6 16 16 7l10 9M9 14v11h14V14' fill='none' stroke='%23d9a441' stroke-width='2.2' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;1,8..60,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green-950: #06281b;
+      --green-900: #0a3324;
+      --gold: #d9a441;
+      --cream: #f8f1e0;
+      --cream-muted: #e4dfcf;
+      --whatsapp: #128c3a;
+      --whatsapp-hover: #0f7a32;
+      --ink: #10271d;
+      --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+      --sans: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; }
+
+    html { background: var(--green-950); -webkit-text-size-adjust: 100%; }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      min-height: 100svh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(120% 70% at 50% 18%, var(--green-900), var(--green-950) 72%);
+      color: var(--cream);
+      font-family: var(--serif);
+    }
+
+    /* Prédio: foto real, tingida de verde e dissolvida no fundo */
+    .backdrop {
+      position: absolute;
+      inset: auto 0 0;
+      z-index: 0;
+      aspect-ratio: 800 / 1049;
+      overflow: hidden;
+      isolation: isolate;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 42%, #000 76%);
+      mask-image: linear-gradient(to bottom, transparent 42%, #000 76%);
+    }
+    .backdrop img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+    }
+    .backdrop::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: #6fb48d;
+      mix-blend-mode: multiply;
+    }
+    .backdrop::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+        rgba(6, 40, 27, .3) 60%,
+        rgba(6, 40, 27, .1) 88%,
+        rgba(6, 40, 27, .6) 100%);
+    }
+
+    /* Pontos dourados discretos nos cantos */
+    body::before,
+    body::after {
+      content: "";
+      position: absolute;
+      z-index: 0;
+      width: 44vw;
+      max-width: 300px;
+      height: 240px;
+      background-image: radial-gradient(circle, var(--gold) 1.2px, transparent 1.6px);
+      background-size: 22px 22px;
+      opacity: .4;
+      pointer-events: none;
+    }
+    body::before {
+      top: 0;
+      left: 0;
+      -webkit-mask-image: radial-gradient(circle at top left, #000, transparent 72%);
+      mask-image: radial-gradient(circle at top left, #000, transparent 72%);
+    }
+    body::after {
+      top: 0;
+      right: 0;
+      -webkit-mask-image: radial-gradient(circle at top right, #000, transparent 72%);
+      mask-image: radial-gradient(circle at top right, #000, transparent 72%);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 480px;
+      margin-inline: auto;
+      /* O espaço inferior deixa o prédio aparecer abaixo do conteúdo */
+      padding: max(20px, env(safe-area-inset-top)) 20px clamp(190px, 28svh, 300px);
+      text-align: center;
+    }
+
+    .emblem {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--gold);
+    }
+    .emblem::before,
+    .emblem::after {
+      content: "";
+      width: 58px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold));
+    }
+    .emblem::after { transform: scaleX(-1); }
+    .emblem svg { width: 38px; height: 38px; }
+
+    .portrait {
+      display: block;
+      width: clamp(116px, 20svh, 164px);
+      height: auto;
+      aspect-ratio: 1;
+      margin-top: 12px;
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 35%;
+      background: var(--cream);
+    }
+
+    .portrait-btn {
+      position: relative;
+      display: block;
+      margin-top: 12px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: none;
+      cursor: pointer;
+    }
+    .portrait-btn .portrait { margin-top: 0; }
+    .portrait-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+    .portrait-btn__badge {
+      position: absolute;
+      right: 2px;
+      bottom: 6px;
+      display: grid;
+      place-items: center;
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--green-950);
+      border-radius: 50%;
+      background: var(--gold);
+      color: var(--green-950);
+      font-family: var(--serif);
+      font-size: 1.0625rem;
+      font-weight: 600;
+      font-style: italic;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+    }
+    .about__photo {
+      display: block;
+      width: 96px;
+      height: 96px;
+      margin: 0 auto 12px;
+      border: 3px solid var(--gold);
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: 50% 35%;
+    }
+    .about { text-align: center; }
+    .about h2 { padding-right: 0; }
+    .about p { margin-top: 12px; font-size: 1rem; line-height: 1.5; color: var(--cream); text-align: left; }
+
+    .name {
+      margin-top: 12px;
+      font-size: 1.75rem;
+      font-weight: 500;
+      line-height: 1.1;
+      letter-spacing: .01em;
+    }
+    .role {
+      margin-top: 4px;
+      font-size: 1.0625rem;
+      font-style: italic;
+      color: var(--cream-muted);
+    }
+
+    .rule {
+      width: 76px;
+      height: 2px;
+      margin-top: 16px;
+      border: 0;
+      background: var(--gold);
+    }
+
+    .headline {
+      margin-top: 16px;
+      font-size: clamp(2.375rem, 11.2vw, 3.25rem);
+      font-weight: 400;
+      line-height: 1.06;
+      letter-spacing: -.012em;
+      text-wrap: balance;
+    }
+    .lead {
+      margin-top: 12px;
+      font-size: 1.125rem;
+      line-height: 1.35;
+      color: var(--cream-muted);
+      text-wrap: balance;
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 380px;
+      margin-top: 22px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 60px;
+      padding: 10px 18px;
+      border-radius: 16px;
+      font-family: var(--sans);
+      font-size: 1.0625rem;
+      font-weight: 600;
+      line-height: 1.2;
+      text-align: left;
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .3);
+      transition: background-color .15s ease, transform .15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+    .btn__icon { flex: none; width: 30px; height: 30px; }
+    .btn__label { flex: 1; text-wrap: balance; }
+    .btn__trail { flex: none; width: 20px; height: 20px; }
+
+    .btn--whatsapp { background: var(--whatsapp); color: #fff; }
+    .btn--whatsapp:hover { background: var(--whatsapp-hover); }
+    .btn--projects { background: var(--cream); color: var(--ink); }
+    .btn--projects:hover { background: #fff; }
+
+    .note {
+      margin-top: 8px;
+      font-size: .9375rem;
+      font-style: italic;
+      line-height: 1.3;
+      color: var(--cream-muted);
+    }
+    .btn--projects { margin-top: 14px; }
+
+    .btn--quiz { background: var(--gold); color: var(--green-950); margin-bottom: 4px; cursor: pointer; border: 0; width: 100%; }
+    .btn--quiz:hover { background: #e6b556; }
+    .btn--projects { margin-top: 14px; }
+    .tip {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 1px solid rgba(217, 164, 65, .45);
+      border-radius: 12px;
+      background: rgba(6, 40, 27, .55);
+      font-family: var(--sans);
+      font-size: .875rem;
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--cream);
+      text-align: left;
+    }
+    .tip strong { color: var(--gold); font-weight: 600; }
+
+    /* Empreendimentos (aparece só quando houver itens no script) */
+    .listings { width: 100%; max-width: 380px; margin-top: 26px; }
+    .listings[hidden] { display: none; }
+    .listings h2 { font-size: 1.25rem; font-weight: 500; color: var(--gold); margin-bottom: 10px; }
+    .card {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 12px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: var(--cream);
+      color: var(--ink);
+      text-align: left;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .3);
+    }
+    .card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+    .card__body { padding: 12px 14px 14px; font-family: var(--sans); }
+    .card__name { font-family: var(--serif); font-size: 1.25rem; font-weight: 500; }
+    .card__meta { margin-top: 2px; font-size: .875rem; font-weight: 500; color: #3d5448; }
+    .card__price { margin-top: 6px; font-size: .9375rem; font-weight: 600; }
+    .card__perk { margin-top: 2px; font-size: .8125rem; font-style: italic; color: #3d5448; }
+    .card__cta {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 10px; min-height: 46px; border-radius: 12px;
+      background: var(--whatsapp); color: #fff; text-decoration: none;
+      font-size: .9375rem; font-weight: 600;
+    }
+    .card__cta:hover { background: var(--whatsapp-hover); }
+    .card__cta svg { width: 20px; height: 20px; }
+    .card__site { display: block; margin-top: 8px; font-size: .8125rem; color: #3d5448; text-align: center; }
+
+    /* Botão flutuante de WhatsApp */
+    .fab {
+      position: fixed;
+      z-index: 20;
+      right: max(16px, env(safe-area-inset-right));
+      bottom: max(16px, env(safe-area-inset-bottom));
+      display: grid;
+      place-items: center;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--whatsapp);
+      color: #fff;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, .45);
+      transition: transform .15s ease;
+    }
+    .fab:hover { transform: scale(1.06); }
+    .fab:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+    .fab svg { width: 32px; height: 32px; }
+
+    /* Aviso ao voltar do site */
+    .toast {
+      position: fixed;
+      z-index: 30;
+      left: 50%;
+      top: 50%;
+      width: min(92vw, 420px);
+      padding: 16px;
+      border-radius: 16px;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: var(--sans);
+      text-align: left;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, .5);
+      transform: translate(-50%, calc(-50% + 24px));
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .toast.is-open { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
+    .scrim {
+      position: fixed;
+      inset: 0;
+      z-index: 25;
+      background: rgba(0, 0, 0, .75);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s ease;
+    }
+    .scrim.is-open { opacity: 1; pointer-events: auto; }
+    .toast p { font-size: .9375rem; font-weight: 500; line-height: 1.35; padding-right: 22px; }
+    .toast p strong { font-weight: 600; }
+    .toast .card__cta { margin-top: 12px; }
+    .toast__close {
+      position: absolute; top: 6px; right: 6px; width: 32px; height: 32px;
+      border: 0; border-radius: 50%; background: transparent; color: var(--ink);
+      font-size: 1.25rem; line-height: 1; cursor: pointer;
+    }
+
+    /* Perguntas rápidas */
+    dialog.quiz {
+      width: min(92vw, 440px);
+      max-height: 92svh;
+      margin: auto;
+      padding: 22px 20px 20px;
+      border: 1px solid var(--gold);
+      border-radius: 20px;
+      background: var(--green-950);
+      color: var(--cream);
+      font-family: var(--sans);
+      text-align: left;
+      overflow-y: auto;
+    }
+    dialog.quiz::backdrop { background: rgba(0, 0, 0, .65); }
+    .quiz h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; line-height: 1.15; padding-right: 28px; }
+    .quiz__sub { margin-top: 4px; font-size: .875rem; color: var(--cream-muted); }
+    .quiz fieldset { margin-top: 16px; padding: 0; border: 0; min-width: 0; }
+    .quiz legend { margin-bottom: 8px; padding: 0; font-size: .9375rem; font-weight: 600; color: var(--gold); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chips input { position: absolute; opacity: 0; pointer-events: none; }
+    .chips label {
+      padding: 10px 14px;
+      border: 1.5px solid rgba(248, 241, 224, .35);
+      border-radius: 999px;
+      font-size: .9375rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .chips input:checked + label { background: var(--gold); border-color: var(--gold); color: var(--green-950); font-weight: 600; }
+    .chips input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; }
+    .quiz input[type="text"] {
+      width: 100%; padding: 12px 14px; border: 1.5px solid rgba(248, 241, 224, .35);
+      border-radius: 12px; background: rgba(255, 255, 255, .06); color: var(--cream);
+      font: inherit; font-size: 1rem;
+    }
+    .quiz input[type="text"]::placeholder { color: rgba(248, 241, 224, .5); }
+    .quiz .btn { margin-top: 20px; width: 100%; justify-content: center; border: 0; cursor: pointer; }
+    .quiz__close {
+      position: absolute; top: 10px; right: 10px; width: 36px; height: 36px;
+      border: 0; border-radius: 50%; background: transparent; color: var(--cream);
+      font-size: 1.5rem; line-height: 1; cursor: pointer;
+    }
+    .quiz__priv { margin-top: 10px; font-size: .75rem; text-align: center; color: var(--cream-muted); }
+
+    /* Avaliação da página */
+    .feedback-link {
+      margin-top: 22px;
+      padding: 8px 10px;
+      border: 0;
+      background: none;
+      color: var(--cream-muted);
+      font-family: var(--sans);
+      font-size: .8125rem;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+    .feedback-link:hover { color: var(--cream); }
+    .feedback-link:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+    .stars { display: flex; flex-direction: row-reverse; justify-content: center; gap: 2px; }
+    .stars input { position: absolute; opacity: 0; pointer-events: none; }
+    .stars label {
+      padding: 0 4px;
+      font-size: 2.5rem;
+      line-height: 1.1;
+      color: rgba(248, 241, 224, .3);
+      cursor: pointer;
+      transition: color .12s ease;
+    }
+    .stars input:checked ~ label,
+    .stars label:hover,
+    .stars label:hover ~ label { color: var(--gold); }
+    .stars input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 8px; }
+    .quiz textarea {
+      width: 100%; min-height: 96px; padding: 12px 14px; resize: vertical;
+      border: 1.5px solid rgba(248, 241, 224, .35); border-radius: 12px;
+      background: rgba(255, 255, 255, .06); color: var(--cream); font: inherit; font-size: 1rem;
+    }
+    .quiz textarea::placeholder { color: rgba(248, 241, 224, .5); }
+    .fb-error { margin-top: 10px; font-size: .875rem; color: #ffb4a8; }
+    .fb-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .quiz .btn[disabled] { opacity: .6; cursor: wait; }
+
+    /* Pré-loader */
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: var(--green-950);
+      color: var(--gold);
+      transition: opacity .45s ease, visibility .45s ease;
+      /* Garantia: se o script falhar, some sozinho depois de 4s */
+      animation: loaderFailsafe .45s ease 4s forwards;
+    }
+    .loader.is-done { opacity: 0; visibility: hidden; }
+    .loader svg { width: 72px; height: 72px; }
+    .loader svg path {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+      animation: loaderDraw 1.1s ease forwards;
+    }
+    .loader svg path:nth-child(2) { animation-delay: .15s; }
+    .loader svg path:nth-child(3) { animation-delay: .3s; }
+    .loader svg path:nth-child(4) { animation-delay: .45s; }
+    .loader__name {
+      font-size: 1.25rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0;
+      animation: loaderFade .6s ease .5s forwards;
+    }
+    @keyframes loaderDraw { to { stroke-dashoffset: 0; } }
+    @keyframes loaderFade { to { opacity: 1; } }
+    @keyframes loaderFailsafe { to { opacity: 0; visibility: hidden; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .loader svg path { animation: none; stroke-dashoffset: 0; }
+      .loader__name { animation: none; opacity: 1; }
+      .btn, .fab, .toast { transition: none; }
+      .btn:hover, .fab:hover { transform: none; }
+    }
+
+    /* Computador: conteúdo à esquerda, prédio à direita */
+    @media (min-width: 900px) {
+      .backdrop {
+        inset: 0 0 0 auto;
+        width: min(62vw, 900px);
+        aspect-ratio: auto;
+        -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 48%);
+        mask-image: linear-gradient(to right, transparent 0%, #000 48%);
+      }
+      .backdrop img { object-position: center 30%; }
+      .backdrop::after {
+        background: linear-gradient(to bottom,
+          rgba(6, 40, 27, .4) 0%,
+          rgba(6, 40, 27, .1) 25%,
+          rgba(6, 40, 27, .1) 80%,
+          rgba(6, 40, 27, .6) 100%);
+      }
+      /* O lado direito é da foto: os pontos ficam nos cantos esquerdos */
+      body::after {
+        top: auto;
+        right: auto;
+        bottom: 0;
+        left: 0;
+        -webkit-mask-image: radial-gradient(circle at bottom left, #000, transparent 72%);
+        mask-image: radial-gradient(circle at bottom left, #000, transparent 72%);
+      }
+
+      .page {
+        justify-content: center;
+        max-width: 50%;
+        margin-inline: 0;
+        padding-block: 32px;
+      }
+      .page > * { max-width: 480px; }
+      body { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader" id="loader" aria-hidden="true">
+    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path pathLength="1" d="M4 24 24 6l20 18"/>
+      <path pathLength="1" d="M33 14V7h6v12.5"/>
+      <path pathLength="1" d="M9 21v21h30V21"/>
+      <path pathLength="1" d="M20 22h8v8h-8zM24 22v8M20 26h8"/>
+    </svg>
+    <div class="loader__name">Rickelmyn</div>
+  </div>
+
+  <div class="backdrop" aria-hidden="true">
+    <img src="IMG/IMG-MA.jpg" alt="" width="800" height="1049">
+  </div>
+
+  <main class="page">
+    <div class="emblem" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 24 24 6l20 18"/>
+        <path d="M33 14V7h6v12.5"/>
+        <path d="M9 21v21h30V21"/>
+        <path d="M20 22h8v8h-8zM24 22v8M20 26h8"/>
+      </svg>
+    </div>
+
+    <button type="button" class="portrait-btn" id="openAbout" aria-label="Quem sou eu: saiba mais sobre o Rickelmyn">
+      <img class="portrait" src="IMG/EU.jpeg" alt="Foto de Rickelmyn" width="1254" height="1254">
+      <span class="portrait-btn__badge" aria-hidden="true">i</span>
+    </button>
+
+    <h2 class="name">Rickelmyn</h2>
+    <p class="role">Consultor de Vendas</p>
+
+    <hr class="rule">
+
+    <h1 class="headline">Seu próximo lar começa aqui.</h1>
+    <p class="lead">Encontre o imóvel ideal com quem entende de você.</p>
+
+    <div class="actions">
+      <a class="btn btn--whatsapp"
+         href="https://wa.me/5511964870961?text=Ol%C3%A1%2C%20Rickelmyn!%20Vim%20pela%20sua%20p%C3%A1gina%20e%20quero%20saber%20mais%20sobre%20os%20apartamentos."
+         target="_blank" rel="noopener">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+        </svg>
+        <span class="btn__label">Fale comigo, o seu consultor</span>
+        <svg class="btn__trail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h16M14 6l6 6-6 6"/>
+        </svg>
+      </a>
+      <p class="note">Prefere falar com uma pessoa? Me chama no WhatsApp.</p>
+
+      <a class="btn btn--projects" id="siteLink" href="https://mundoapto.com.br/imoveis/" target="_blank" rel="noopener">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 21.5h20M4 21.5V10h6v11.5M10 21.5V3h10v18.5"/>
+          <path d="M13 7h1M16.5 7h1M13 11h1M16.5 11h1M13 15h1M16.5 15h1M6.5 14h1M6.5 17.5h1"/>
+        </svg>
+        <span class="btn__label">Conheça os projetos Mundo Apto</span>
+        <svg class="btn__trail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>
+        </svg>
+      </a>
+    </div>
+
+    <section class="listings" id="listings" hidden aria-labelledby="listingsTitle">
+      <h2 id="listingsTitle">Empreendimentos em destaque</h2>
+      <div id="cards"></div>
+    </section>
+
+
+  </main>
+
+  <!-- Aviso ao voltar do site -->
+  <div class="scrim" id="scrim"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite">
+    <button type="button" class="toast__close" id="toastClose" aria-label="Fechar">&times;</button>
+    <p><strong>Gostou de algum imóvel?</strong> Me conta qual e eu te mando valores, plantas e condições aqui no WhatsApp.</p>
+    <a class="card__cta" id="toastCta" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>
+      Chamar no WhatsApp
+    </a>
+  </div>
+
+  <!-- Avaliação da página -->
+  <!-- Quem sou eu (texto provisório: troque pelo seu) + avaliação da página -->
+  <dialog class="quiz about" id="about" aria-labelledby="aboutTitle">
+    <button type="button" class="quiz__close" id="aboutClose" aria-label="Fechar">&times;</button>
+
+    <div id="aboutView">
+      <img class="about__photo" src="IMG/EU.jpeg" alt="" width="96" height="96">
+      <h2 id="aboutTitle">Quem sou eu</h2>
+      <p>Olá, eu sou o Rickelmyn, consultor de vendas de imóveis da Mundo Apto.</p>
+      <p>Meu trabalho é te ajudar a encontrar o imóvel certo para o seu momento, com atendimento próximo e transparente, do primeiro contato até a entrega das chaves.</p>
+      <p>Me conta o que você procura e eu cuido do resto.</p>
+      <button type="button" class="btn btn--projects" id="openFeedback" style="width:100%;margin-top:18px;border:0;cursor:pointer">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>
+        </svg>
+        <span class="btn__label">Deixe sua avaliação ou sugestão sobre esta página</span>
+        <svg class="btn__trail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h16M14 6l6 6-6 6"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="fbFormView" hidden>
+      <button type="button" class="feedback-link" id="fbBack" style="margin:-4px 0 0;padding-left:0">&larr; Voltar</button>
+      <h2 id="fbTitle">O que achou desta página?</h2>
+      <p class="quiz__sub" style="text-align:center">Sua opinião me ajuda a melhorar. Leva menos de 1 minuto.</p>
+      <form id="fbForm">
+        <fieldset>
+          <legend style="text-align:center;width:100%">Sua nota</legend>
+          <div class="stars">
+            <input type="radio" name="nota" id="s5" value="5" required><label for="s5" title="5 estrelas" aria-label="5 estrelas">★</label>
+            <input type="radio" name="nota" id="s4" value="4"><label for="s4" title="4 estrelas" aria-label="4 estrelas">★</label>
+            <input type="radio" name="nota" id="s3" value="3"><label for="s3" title="3 estrelas" aria-label="3 estrelas">★</label>
+            <input type="radio" name="nota" id="s2" value="2"><label for="s2" title="2 estrelas" aria-label="2 estrelas">★</label>
+            <input type="radio" name="nota" id="s1" value="1"><label for="s1" title="1 estrela" aria-label="1 estrela">★</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Sugestão de ajuste ou erro que encontrou (opcional)</legend>
+          <textarea name="mensagem" id="fbMsg" maxlength="1000" placeholder="Ex.: o botão X não funcionou no meu celular…"></textarea>
+        </fieldset>
+        <!-- Campo-isca contra robôs: não preencher -->
+        <div class="fb-hp" aria-hidden="true"><input type="text" name="botcheck" tabindex="-1" autocomplete="off"></div>
+        <p class="fb-error" id="fbError" role="alert" hidden>Não consegui enviar agora. Tente de novo em instantes.</p>
+        <button type="submit" class="btn btn--projects" id="fbSend" style="justify-content:center;margin-top:20px;width:100%;border:0;cursor:pointer;background:var(--gold);color:var(--green-950)">Enviar avaliação</button>
+      </form>
+    </div>
+
+    <div id="fbThanksView" hidden>
+      <h2>Muito obrigado!</h2>
+      <p>Sua opinião ajuda muito.</p>
+      <p>Aproveitando: está procurando imóvel? Me conta o que você busca e eu te mando as melhores opções.</p>
+      <a class="btn btn--whatsapp" id="fbWa" href="#" target="_blank" rel="noopener" style="justify-content:center;margin-top:18px">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>
+        Falar com o Rickelmyn
+      </a>
+    </div>
+  </dialog>
+
+  <!-- Dica antes de ir ao site -->
+  <dialog class="quiz" id="siteTip" aria-labelledby="tipTitle">
+    <button type="button" class="quiz__close" id="tipClose" aria-label="Fechar">&times;</button>
+    <h2 id="tipTitle">Antes de ir ao site</h2>
+    <p class="quiz__sub" style="font-size:1rem;line-height:1.4;margin-top:10px;color:var(--cream)">
+      Fique à vontade para conhecer o site! Só um detalhe: ao se cadastrar lá, <strong style="color:var(--gold)">você será atendido por um dos nossos outros corretores</strong>, e não por mim.
+    </p>
+    <p class="quiz__sub" style="font-size:1rem;line-height:1.4;margin-top:10px;color:var(--cream)">Se quiser o meu atendimento, é só me chamar no WhatsApp: eu te envio <strong style="color:var(--gold)">tabela de preços, plantas e simulação</strong> com todo o cuidado. Ou anote o que gostou e volte aqui para me contar.</p>
+    <a class="btn btn--whatsapp" id="tipWa" href="#" target="_blank" rel="noopener" style="justify-content:center;margin-top:18px">
+      <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>
+      Prefiro falar no WhatsApp
+    </a>
+    <a id="tipGo" href="#" target="_blank" rel="noopener"
+       style="display:block;margin-top:14px;text-align:center;font-size:.9375rem;color:var(--cream-muted);text-decoration:underline">Ir ao site mesmo assim</a>
+  </dialog>
+
+  <!-- Perguntas rápidas -->
+  <dialog class="quiz" id="quiz" aria-labelledby="quizTitle">
+    <button type="button" class="quiz__close" id="quizClose" aria-label="Fechar">&times;</button>
+    <h2 id="quizTitle">Qual apê combina com você?</h2>
+    <p class="quiz__sub">Responda e eu já te chamo com as melhores opções.</p>
+    <form id="quizForm">
+      <fieldset>
+        <legend>Faixa de valor</legend>
+        <div class="chips">
+          <input type="radio" name="valor" id="v1" value="até R$ 250 mil"><label for="v1">Até R$ 250 mil</label>
+          <input type="radio" name="valor" id="v2" value="entre R$ 250 mil e R$ 400 mil"><label for="v2">R$ 250 a 400 mil</label>
+          <input type="radio" name="valor" id="v3" value="entre R$ 400 mil e R$ 600 mil"><label for="v3">R$ 400 a 600 mil</label>
+          <input type="radio" name="valor" id="v4" value="acima de R$ 600 mil"><label for="v4">Acima de R$ 600 mil</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Quartos</legend>
+        <div class="chips">
+          <input type="radio" name="quartos" id="q0" value="studio"><label for="q0">Studio</label>
+          <input type="radio" name="quartos" id="q1" value="1 quarto"><label for="q1">1</label>
+          <input type="radio" name="quartos" id="q2" value="2 quartos"><label for="q2">2</label>
+          <input type="radio" name="quartos" id="q3" value="3 ou mais quartos"><label for="q3">3 ou mais</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Região de preferência</legend>
+        <input type="text" name="regiao" id="regiao" placeholder="Ex.: Zona Leste, Centro, perto do metrô" maxlength="80" autocomplete="off">
+      </fieldset>
+      <button type="submit" class="btn btn--whatsapp">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>
+        Enviar no WhatsApp
+      </button>
+      <a id="quizSkip" href="#" target="_blank" rel="noopener"
+         style="display:block;margin-top:14px;text-align:center;font-size:.9375rem;color:var(--cream-muted);text-decoration:underline">Pular e ir direto ao WhatsApp</a>
+      <p class="quiz__priv">Nada é guardado aqui: suas respostas vão direto na mensagem para mim.</p>
+    </form>
+  </dialog>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="wa" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></symbol>
+  </svg>
+
+  <script>
+    (function () {
+      // Pré-loader: some quando a página carrega (mínimo 0,7s, máximo 3s)
+      var loader = document.getElementById("loader");
+      var t0 = Date.now(), hidden = false;
+      var hideLoader = function () {
+        if (hidden) return;
+        hidden = true;
+        loader.classList.add("is-done");
+      };
+      var onReady = function () {
+        setTimeout(hideLoader, Math.max(0, 700 - (Date.now() - t0)));
+      };
+      if (document.readyState === "complete") onReady();
+      else window.addEventListener("load", onReady);
+      setTimeout(hideLoader, 3000);
+
+      var PHONE = "5511964870961";
+      var wa = function (text) {
+        return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(text);
+      };
+
+      /* ====== EMPREENDIMENTOS ======
+         Preencha esta lista e a seção aparece sozinha. Exemplo:
+         { nome: "Residencial Exemplo", local: "Bairro, Cidade", meta: "2 quartos · 45 m²",
+           preco: "A partir de R$ 250 mil", destaque: "Entrega 2027",
+           foto: "IMG/exemplo.jpg", site: "https://mundoapto.com.br/imoveis/exemplo" }
+      */
+      var EMPREENDIMENTOS = [];
+
+
+      // Cards
+      var esc = function (s) {
+        return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      };
+      if (EMPREENDIMENTOS.length) {
+        var html = EMPREENDIMENTOS.map(function (e) {
+          var msg = "Olá, Rickelmyn! Vim pela sua página e quero saber mais sobre o " + e.nome + ".";
+          return '<article class="card">' +
+            (e.foto ? '<img src="' + esc(e.foto) + '" alt="' + esc(e.nome) + '" loading="lazy">' : "") +
+            '<div class="card__body">' +
+            '<h3 class="card__name">' + esc(e.nome) + "</h3>" +
+            '<p class="card__meta">' + esc([e.local, e.meta].filter(Boolean).join(" · ")) + "</p>" +
+            (e.preco ? '<p class="card__price">' + esc(e.preco) + "</p>" : "") +
+            (e.destaque ? '<p class="card__perk">' + esc(e.destaque) + "</p>" : "") +
+            '<a class="card__cta" href="' + wa(msg) + '" target="_blank" rel="noopener">' +
+            '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>' +
+            "Quero saber mais</a>" +
+            (e.site ? '<a class="card__site js-site" href="' + esc(e.site) + '" target="_blank" rel="noopener">Ver no site da Mundo Apto</a>' : "") +
+            "</div></article>";
+        }).join("");
+        document.getElementById("cards").innerHTML = html;
+        document.getElementById("listings").hidden = false;
+      }
+
+      // Avaliação da página (envio por e-mail via Web3Forms, sem banco de dados)
+      var FEEDBACK_KEY = "COLE_SUA_CHAVE_AQUI"; // chave grátis em web3forms.com
+      var about = document.getElementById("about");
+      var aboutView = document.getElementById("aboutView");
+      var fbForm = document.getElementById("fbForm");
+      var fbFormView = document.getElementById("fbFormView");
+      var fbThanksView = document.getElementById("fbThanksView");
+      var fbError = document.getElementById("fbError");
+      var fbSend = document.getElementById("fbSend");
+      document.getElementById("fbWa").href = wa("Olá, Rickelmyn! Acabei de avaliar a sua página e estou procurando um imóvel.");
+      // Alterna entre as telas do modal: sobre, avaliação e agradecimento
+      var showView = function (v) {
+        aboutView.hidden = v !== "about";
+        fbFormView.hidden = v !== "fb";
+        fbThanksView.hidden = v !== "thanks";
+      };
+      document.getElementById("openFeedback").addEventListener("click", function () {
+        fbForm.reset();
+        fbError.hidden = true;
+        fbSend.disabled = false;
+        showView("fb");
+      });
+      document.getElementById("fbBack").addEventListener("click", function () { showView("about"); });
+      fbForm.addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        if (fbForm.elements.botcheck.value) return; // robô
+        fbError.hidden = true;
+        fbSend.disabled = true;
+        fbSend.textContent = "Enviando...";
+        var nota = fbForm.elements.nota.value;
+        var done = function (ok) {
+          fbSend.textContent = "Enviar avaliação";
+          if (ok) {
+            showView("thanks");
+          } else {
+            fbSend.disabled = false;
+            fbError.hidden = false;
+          }
+        };
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Accept": "application/json" },
+          body: JSON.stringify({
+            access_key: FEEDBACK_KEY,
+            subject: "Avaliação da página: " + nota + "/5",
+            from_name: "Página do Rickelmyn",
+            nota: nota + " de 5",
+            mensagem: fbForm.elements.mensagem.value.trim() || "(sem comentário)",
+            botcheck: ""
+          })
+        }).then(function (r) { return r.json(); })
+          .then(function (d) { done(!!(d && d.success)); })
+          .catch(function () { done(false); });
+      });
+
+      // Quem sou eu (abre ao clicar na foto)
+      document.getElementById("openAbout").addEventListener("click", function () {
+        showView("about");
+        if (about.showModal) about.showModal(); else about.setAttribute("open", "");
+      });
+      document.getElementById("aboutClose").addEventListener("click", function () { about.close(); });
+      about.addEventListener("click", function (ev) { if (ev.target === about) about.close(); });
+
+      // Aviso ao voltar do site (mostra uma vez)
+      var toast = document.getElementById("toast");
+      var scrim = document.getElementById("scrim");
+      var visited = false, shown = false;
+      document.getElementById("toastCta").href = wa("Olá, Rickelmyn! Acabei de ver o site e gostei de um imóvel. Pode me passar valores e condições?");
+      var tip = document.getElementById("siteTip");
+      var tipGo = document.getElementById("tipGo");
+      var openDlg = function (d) { if (d.showModal) d.showModal(); else d.setAttribute("open", ""); };
+      document.getElementById("tipWa").href = wa("Olá, Rickelmyn! Vim pela sua página e quero ajuda para escolher um apartamento.");
+      document.addEventListener("click", function (ev) {
+        var a = ev.target.closest && ev.target.closest("#siteLink, .js-site");
+        if (!a) return;
+        // Sempre pergunta antes de levar ao site
+        ev.preventDefault();
+        tipGo.href = a.href;
+        openDlg(tip);
+      });
+      tipGo.addEventListener("click", function () { visited = true; shown = false; tip.close(); });
+      document.getElementById("tipClose").addEventListener("click", function () { tip.close(); });
+      tip.addEventListener("click", function (ev) { if (ev.target === tip) tip.close(); });
+      var onBack = function () {
+        if (visited && !shown && !document.hidden) {
+          shown = true;
+          setTimeout(function () {
+            toast.classList.add("is-open");
+            scrim.classList.add("is-open");
+          }, 600);
+        }
+      };
+      var closeToast = function () {
+        toast.classList.remove("is-open");
+        scrim.classList.remove("is-open");
+      };
+      document.addEventListener("visibilitychange", onBack);
+      window.addEventListener("focus", onBack);
+      document.getElementById("toastClose").addEventListener("click", closeToast);
+      document.getElementById("toastCta").addEventListener("click", closeToast);
+      scrim.addEventListener("click", closeToast);
+      document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") closeToast(); });
+
+      // Perguntas rápidas
+      var quiz = document.getElementById("quiz");
+      var generic = "Olá, Rickelmyn! Vim pela sua página e quero saber mais sobre os apartamentos.";
+      var quizBase = generic;
+      var quizSkip = document.getElementById("quizSkip");
+      // Qualquer link de WhatsApp da página passa primeiro pelas perguntas rápidas
+      document.addEventListener("click", function (ev) {
+        var a = ev.target.closest && ev.target.closest('a[href^="https://wa.me/"]');
+        if (!a || a.closest("#quiz")) return;
+        ev.preventDefault();
+        var text = "";
+        try { text = new URL(a.href).searchParams.get("text") || ""; } catch (e) {}
+        quizBase = text || generic;
+        quizSkip.href = a.href;
+        document.getElementById("quizForm").reset();
+        tip.close();
+        about.close();
+        closeToast();
+        openDlg(quiz);
+      });
+      quizSkip.addEventListener("click", function () { quiz.close(); });
+      document.getElementById("quizClose").addEventListener("click", function () { quiz.close(); });
+      quiz.addEventListener("click", function (ev) { if (ev.target === quiz) quiz.close(); });
+      document.getElementById("quizForm").addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        var f = ev.target;
+        var valor = (f.elements.valor.value || "").trim();
+        var quartos = (f.elements.quartos.value || "").trim();
+        var regiao = (f.elements.regiao.value || "").trim();
+        var parts = [];
+        if (quartos) parts.push(quartos);
+        if (valor) parts.push(valor);
+        if (regiao) parts.push("região: " + regiao);
+        var msg = quizBase + (parts.length ? " Meu perfil: " + parts.join(", ") + "." : "");
+        window.open(wa(msg), "_blank", "noopener");
+        quiz.close();
+      });
+    })();
+  </script>
+</body>
+</html>
