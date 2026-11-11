@@ -404,7 +404,11 @@
       font-family: var(--sans);
       text-align: left;
       overflow-y: auto;
+      overscroll-behavior: contain;
     }
+    /* Trava a rolagem da página enquanto algum modal estiver aberto */
+    html:has(dialog[open]),
+    html:has(dialog[open]) body { overflow: hidden; }
     dialog.quiz::backdrop { background: rgba(0, 0, 0, .65); }
     .quiz h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; line-height: 1.15; padding-right: 28px; }
     .quiz__sub { margin-top: 4px; font-size: .875rem; color: var(--cream-muted); }
