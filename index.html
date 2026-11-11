@@ -410,6 +410,26 @@
     html:has(dialog[open]),
     html:has(dialog[open]) body { overflow: hidden; }
     dialog.quiz::backdrop { background: rgba(0, 0, 0, .65); }
+    /* Animação de entrada dos modais */
+    dialog.quiz[open] { animation: dlgIn .3s cubic-bezier(.2, .8, .2, 1); }
+    dialog.quiz[open]::backdrop { animation: dlgFade .3s ease-out; }
+    @keyframes dlgIn {
+      from { opacity: 0; transform: translateY(18px) scale(.96); }
+      to { opacity: 1; transform: none; }
+    }
+    @keyframes dlgFade { from { opacity: 0; } to { opacity: 1; } }
+    /* Animação de saída (classe aplicada pelo JS antes de fechar) */
+    dialog.quiz[open].is-closing { animation: dlgOut .25s ease-in forwards; }
+    dialog.quiz[open].is-closing::backdrop { animation: dlgFadeOut .25s ease-in forwards; }
+    @keyframes dlgOut {
+      from { opacity: 1; transform: none; }
+      to { opacity: 0; transform: translateY(18px) scale(.96); }
+    }
+    @keyframes dlgFadeOut { from { opacity: 1; } to { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) {
+      dialog.quiz[open], dialog.quiz[open]::backdrop,
+      dialog.quiz[open].is-closing, dialog.quiz[open].is-closing::backdrop { animation: none; }
+    }
     .quiz h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; line-height: 1.15; padding-right: 28px; }
     .quiz__sub { margin-top: 4px; font-size: .875rem; color: var(--cream-muted); }
     .quiz fieldset { margin-top: 16px; padding: 0; border: 0; min-width: 0; }
@@ -493,9 +513,22 @@
       color: var(--gold);
       transition: opacity .45s ease, visibility .45s ease;
       /* Garantia: se o script falhar, some sozinho depois de 4s */
-      animation: loaderFailsafe .45s ease 4s forwards;
+      animation: loaderFailsafe .45s ease 5s forwards;
     }
     .loader.is-done { opacity: 0; visibility: hidden; }
+    .loader__mark { display: flex; align-items: center; gap: 16px; }
+    .loader__mark::before,
+    .loader__mark::after {
+      content: "";
+      width: 72px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold));
+      transform: scaleX(0);
+      animation: loaderLine .9s ease .5s forwards;
+    }
+    .loader__mark::before { transform-origin: right; }
+    .loader__mark::after { transform-origin: left; background: linear-gradient(to left, transparent, var(--gold)); }
+    @keyframes loaderLine { to { transform: scaleX(1); } }
     .loader svg { width: 72px; height: 72px; }
     .loader svg path {
       stroke-dasharray: 1;
@@ -519,6 +552,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .loader svg path { animation: none; stroke-dashoffset: 0; }
+      .loader__mark::before, .loader__mark::after { animation: none; transform: none; }
       .loader__name { animation: none; opacity: 1; }
       .btn, .fab, .toast { transition: none; }
       .btn:hover, .fab:hover { transform: none; }
@@ -564,12 +598,14 @@
 </head>
 <body>
   <div class="loader" id="loader" aria-hidden="true">
-    <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-      <path pathLength="1" d="M4 24 24 6l20 18"/>
-      <path pathLength="1" d="M33 14V7h6v12.5"/>
-      <path pathLength="1" d="M9 21v21h30V21"/>
-      <path pathLength="1" d="M20 22h8v8h-8zM24 22v8M20 26h8"/>
-    </svg>
+    <div class="loader__mark">
+      <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path pathLength="1" d="M4 24 24 6l20 18"/>
+        <path pathLength="1" d="M33 14V7h6v12.5"/>
+        <path pathLength="1" d="M9 21v21h30V21"/>
+        <path pathLength="1" d="M20 22h8v8h-8zM24 22v8M20 26h8"/>
+      </svg>
+    </div>
     <div class="loader__name">Rickelmyn</div>
   </div>
 
@@ -759,7 +795,7 @@
 
   <script>
     (function () {
-      // Pré-loader: some quando a página carrega (mínimo 0,7s, máximo 3s)
+      // Pré-loader: some quando a página carrega (mínimo 2,2s, máximo 4s)
       var loader = document.getElementById("loader");
       var t0 = Date.now(), hidden = false;
       var hideLoader = function () {
@@ -768,16 +804,47 @@
         loader.classList.add("is-done");
       };
       var onReady = function () {
-        setTimeout(hideLoader, Math.max(0, 700 - (Date.now() - t0)));
+        setTimeout(hideLoader, Math.max(0, 2200 - (Date.now() - t0)));
       };
       if (document.readyState === "complete") onReady();
       else window.addEventListener("load", onReady);
-      setTimeout(hideLoader, 3000);
+      setTimeout(hideLoader, 4000);
 
       var PHONE = "5511964870961";
       var wa = function (text) {
         return "https://wa.me/" + PHONE + "?text=" + encodeURIComponent(text);
       };
+
+      // Fechar modais com animação (botão ×, clique fora, Esc e chamadas de close())
+      (function () {
+        if (!window.HTMLDialogElement) return;
+        var proto = HTMLDialogElement.prototype;
+        var origClose = proto.close, origShow = proto.showModal;
+        var reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        proto.close = function (rv) {
+          var d = this;
+          if (!d.open || d._fin || reduced) return origClose.call(d, rv);
+          d.classList.add("is-closing");
+          var fin = function () {
+            if (!d._fin) return;
+            d._fin = null;
+            d.classList.remove("is-closing");
+            origClose.call(d, rv);
+          };
+          d._fin = fin;
+          d.addEventListener("animationend", function (ev) { if (ev.target === d) fin(); }, { once: true });
+          setTimeout(fin, 350);
+        };
+        proto.showModal = function () {
+          if (this._fin) this._fin(); // fechamento em andamento: conclui antes de reabrir
+          return origShow.call(this);
+        };
+        // Esc fecha com animação
+        document.addEventListener("cancel", function (ev) {
+          var d = ev.target;
+          if (d && d.tagName === "DIALOG") { ev.preventDefault(); d.close(); }
+        }, true);
+      })();
 
       /* ====== EMPREENDIMENTOS ======
          Preencha esta lista e a seção aparece sozinha. Exemplo:
