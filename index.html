@@ -695,11 +695,6 @@
     <div id="fbThanksView" hidden>
       <h2>Muito obrigado!</h2>
       <p>Sua opinião ajuda muito.</p>
-      <p>Aproveitando: está procurando imóvel? Me conta o que você busca e eu te mando as melhores opções.</p>
-      <a class="btn btn--whatsapp" id="fbWa" href="#" target="_blank" rel="noopener" style="justify-content:center;margin-top:18px">
-        <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>
-        Falar com o Rickelmyn
-      </a>
     </div>
   </dialog>
 
@@ -827,7 +822,6 @@
       var fbThanksView = document.getElementById("fbThanksView");
       var fbError = document.getElementById("fbError");
       var fbSend = document.getElementById("fbSend");
-      document.getElementById("fbWa").href = wa("Olá, Rickelmyn! Acabei de avaliar a sua página e estou procurando um imóvel.");
       // Alterna entre as telas do modal: sobre, avaliação e agradecimento
       var showView = function (v) {
         aboutView.hidden = v !== "about";
