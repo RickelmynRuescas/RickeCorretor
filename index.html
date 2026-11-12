@@ -441,7 +441,13 @@
       font-size: .875rem;
       font-weight: 500;
       cursor: pointer;
+      transition: opacity .2s var(--ease), background-color .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
     }
+    /* Com uma opção escolhida, as outras da mesma pergunta ficam em segundo plano */
+    .chips:has(input:checked) label { opacity: .45; }
+    .chips:has(input:checked) input:checked + label,
+    .chips:has(input:checked) label:hover,
+    .chips:has(input:checked) input:focus-visible + label { opacity: 1; }
     .chips input:checked + label { background: var(--gold); border-color: var(--gold); color: var(--green-950); font-weight: 600; }
     .chips input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; }
     .quiz input[type="text"] {
@@ -1107,8 +1113,18 @@
       // "Outra região ou bairro" abre o campo de texto
       quizForm.addEventListener("change", function (ev) {
         if (ev.target.name !== "zona") return;
-        regiaoOutra.hidden = ev.target.value !== "outra";
+        regiaoOutra.hidden = !(ev.target.checked && ev.target.value === "outra");
         if (!regiaoOutra.hidden) regiaoOutra.focus();
+      });
+      // Clicar de novo na opção escolhida desmarca
+      quizForm.addEventListener("click", function (ev) {
+        var lb = ev.target.closest && ev.target.closest(".chips label");
+        if (!lb) return;
+        var input = document.getElementById(lb.htmlFor);
+        if (!input || !input.checked) return;
+        ev.preventDefault();
+        input.checked = false;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
       });
       document.getElementById("quizClose").addEventListener("click", function () { quiz.close(); });
       quiz.addEventListener("click", function (ev) { if (ev.target === quiz) quiz.close(); });
