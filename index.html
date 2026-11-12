@@ -9,13 +9,13 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Rickelmyn | Consultor de Vendas">
   <meta property="og:description" content="Apartamentos que cabem no seu orçamento, com FGTS e Minha Casa, Minha Vida. Atendimento em São Paulo e região.">
-  <meta property="og:image" content="https://rickeconsultor.vercel.app/IMG/EU.jpeg">
+  <meta property="og:image" content="https://rickeconsultor.com.br/IMG/EU.jpeg">
   <meta property="og:image:width" content="1254">
   <meta property="og:image:height" content="1254">
   <meta property="og:image:alt" content="Rickelmyn, consultor de vendas de imóveis">
   <meta property="og:locale" content="pt_BR">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:image" content="https://rickeconsultor.vercel.app/IMG/EU.jpeg">
+  <meta name="twitter:image" content="https://rickeconsultor.com.br/IMG/EU.jpeg">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2306281b'/%3E%3Cpath d='M6 16 16 7l10 9M9 14v11h14V14' fill='none' stroke='%23d9a441' stroke-width='2.2' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -414,7 +414,10 @@
     }
     /* Trava a rolagem da página enquanto algum modal estiver aberto */
     html:has(dialog[open]),
-    html:has(dialog[open]) body { overflow: hidden; }
+    html:has(dialog[open]) body,
+    html.toast-open,
+    html.toast-open body { overflow: hidden; }
+    .scrim { touch-action: none; overscroll-behavior: contain; }
     dialog.quiz::backdrop { background: rgba(0, 0, 0, .65); }
     /* Modais: só um fade curto na entrada e na saída */
     dialog.quiz[open],
@@ -1055,7 +1058,7 @@
       var toast = document.getElementById("toast");
       var scrim = document.getElementById("scrim");
       var visited = false, shown = false;
-      document.getElementById("toastCta").href = wa("Olá, Rickelmyn! Acabei de ver o site e gostei de um imóvel. Pode me passar valores e condições?");
+      document.getElementById("toastCta").href = wa("Olá, Rickelmyn! Vi o site da Mundo Apto e voltei para te perguntar algumas coisas…");
       var tip = document.getElementById("siteTip");
       var tipGo = document.getElementById("tipGo");
       var openDlg = function (d) { if (d.showModal) d.showModal(); else d.setAttribute("open", ""); };
@@ -1063,10 +1066,7 @@
       document.addEventListener("click", function (ev) {
         var a = ev.target.closest && ev.target.closest("#siteLink");
         if (!a) return;
-        // Avisa só na primeira vez da visita; depois vai direto ao site
-        var seen = false;
-        try { seen = sessionStorage.getItem("siteTipSeen") === "1"; } catch (e) {}
-        if (seen) { visited = true; return; }
+        // Sempre avisa antes de ir ao site, a cada clique
         ev.preventDefault();
         tipGo.href = a.href;
         openDlg(tip);
@@ -1074,7 +1074,6 @@
       tipGo.addEventListener("click", function () {
         visited = true;
         shown = false;
-        try { sessionStorage.setItem("siteTipSeen", "1"); } catch (e) {}
         tip.close();
       });
       document.getElementById("tipClose").addEventListener("click", function () { tip.close(); });
@@ -1085,12 +1084,14 @@
           setTimeout(function () {
             toast.classList.add("is-open");
             scrim.classList.add("is-open");
+            document.documentElement.classList.add("toast-open");
           }, 600);
         }
       };
       var closeToast = function () {
         toast.classList.remove("is-open");
         scrim.classList.remove("is-open");
+        document.documentElement.classList.remove("toast-open");
       };
       document.addEventListener("visibilitychange", onBack);
       window.addEventListener("focus", onBack);
