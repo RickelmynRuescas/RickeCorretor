@@ -4,20 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Rickelmyn | Consultor de Vendas</title>
-  <meta name="description" content="Rickelmyn, consultor de vendas de imóveis. Seu próximo lar começa aqui: fale comigo no WhatsApp e conheça os empreendimentos da Mundo Apto.">
+  <meta name="description" content="Rickelmyn, consultor de vendas de imóveis. Apartamentos que cabem no seu orçamento em São Paulo e região, com FGTS e Minha Casa, Minha Vida.">
   <meta name="theme-color" content="#06281b">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Rickelmyn | Consultor de Vendas">
-  <meta property="og:description" content="Seu próximo lar começa aqui. Encontre o imóvel ideal com quem entende de você.">
-  <!-- IMPORTANTE: depois de publicar, troque "IMG/EU.jpeg" abaixo pelo endereço completo,
-       ex.: https://seu-site.vercel.app/IMG/EU.jpeg (WhatsApp exige link absoluto) -->
-  <meta property="og:image" content="https://rickecorretor.vercel.app/IMG/EU.jpeg">
+  <meta property="og:description" content="Apartamentos que cabem no seu orçamento, com FGTS e Minha Casa, Minha Vida. Atendimento em São Paulo e região.">
+  <meta property="og:image" content="https://rickeconsultor.vercel.app/IMG/EU.jpeg">
   <meta property="og:image:width" content="1254">
   <meta property="og:image:height" content="1254">
   <meta property="og:image:alt" content="Rickelmyn, consultor de vendas de imóveis">
   <meta property="og:locale" content="pt_BR">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:image" content="https://rickecorretor.vercel.app/IMG/EU.jpeg">
+  <meta name="twitter:image" content="https://rickeconsultor.vercel.app/IMG/EU.jpeg">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2306281b'/%3E%3Cpath d='M6 16 16 7l10 9M9 14v11h14V14' fill='none' stroke='%23d9a441' stroke-width='2.2' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -34,6 +32,15 @@
       --ink: #10271d;
       --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
       --sans: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+      /* Escala única de cantos, sombras e curva de animação */
+      /* Tamanho único das fotos redondas (página e "Sobre mim") */
+      --portrait-size: clamp(116px, 20svh, 164px);
+      --radius-sm: 10px;
+      --radius: 14px;
+      --radius-lg: 18px;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .18), 0 6px 16px rgba(0, 0, 0, .16);
+      --shadow-lg: 0 2px 4px rgba(0, 0, 0, .2), 0 16px 40px rgba(0, 0, 0, .28);
+      --ease: cubic-bezier(.4, 0, .2, 1);
     }
 
     * { box-sizing: border-box; margin: 0; }
@@ -144,11 +151,36 @@
       background: linear-gradient(to right, transparent, var(--gold));
     }
     .emblem::after { transform: scaleX(-1); }
+
+    /* Linha dourada abaixo do nome, com os selos FGTS e MCMV nas pontas */
+    .rule-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .rule-row .rule {
+      margin-top: 0;
+      width: clamp(60px, 30vw, 140px);
+      background: linear-gradient(to right, transparent, var(--gold) 30%, var(--gold) 70%, transparent);
+    }
+    .seal {
+      font-family: var(--sans);
+      font-size: .6875rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-decoration: none;
+      color: var(--gold);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .seal__check { width: 12px; height: 12px; flex: none; }
     .emblem svg { width: 38px; height: 38px; }
 
     .portrait {
       display: block;
-      width: clamp(116px, 20svh, 164px);
+      width: var(--portrait-size);
       height: auto;
       aspect-ratio: 1;
       margin-top: 12px;
@@ -184,17 +216,17 @@
       font-weight: 700;
       letter-spacing: .06em;
       white-space: nowrap;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+      box-shadow: var(--shadow);
     }
     .about__photo {
       display: block;
-      width: 96px;
-      height: 96px;
+      width: var(--portrait-size);
+      height: auto;
+      aspect-ratio: 1;
       margin: 0 auto 12px;
       border: 3px solid var(--gold);
       border-radius: 50%;
       object-fit: cover;
-      object-position: 50% 35%;
     }
     .about { text-align: center; }
     .about h2 { padding-right: 0; }
@@ -202,21 +234,18 @@
 
     .name {
       margin-top: 12px;
-      font-size: 1.75rem;
+      /* Nome e cargo numa linha só, centralizados */
+      font-size: clamp(.875rem, 3.8vw, 1.125rem);
+      white-space: nowrap;
+      text-align: center;
       font-weight: 500;
       line-height: 1.1;
       letter-spacing: .01em;
     }
-    .role {
-      margin-top: 4px;
-      font-size: 1.0625rem;
-      font-style: italic;
-      color: var(--cream-muted);
-    }
 
     .rule {
-      width: 76px;
-      height: 2px;
+      width: 140px;
+      height: 1px;
       margin-top: 16px;
       border: 0;
       background: var(--gold);
@@ -224,7 +253,7 @@
 
     .headline {
       margin-top: 16px;
-      font-size: clamp(2.375rem, 11.2vw, 3.25rem);
+      font-size: clamp(1.75rem, 7.8vw, 2.5rem);
       font-weight: 400;
       line-height: 1.06;
       letter-spacing: -.012em;
@@ -234,7 +263,7 @@
       margin-top: 12px;
       font-size: 1.125rem;
       line-height: 1.35;
-      color: var(--cream-muted);
+      color: var(--gold);
       text-wrap: balance;
     }
 
@@ -250,20 +279,18 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      min-height: 60px;
+      min-height: 56px;
       padding: 10px 18px;
-      border-radius: 16px;
+      border-radius: var(--radius);
       font-family: var(--sans);
       font-size: 1.0625rem;
       font-weight: 600;
       line-height: 1.2;
       text-align: left;
       text-decoration: none;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, .3);
-      transition: background-color .15s ease, transform .15s ease;
+      box-shadow: var(--shadow);
+      transition: background-color .15s var(--ease);
     }
-    .btn:hover { transform: translateY(-2px); }
-    .btn:active { transform: translateY(0); }
     .btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
     .btn__icon { flex: none; width: 30px; height: 30px; }
     .btn__label { flex: 1; text-wrap: balance; }
@@ -271,86 +298,65 @@
 
     .btn--whatsapp { background: var(--whatsapp); color: #fff; }
     .btn--whatsapp:hover { background: var(--whatsapp-hover); }
-    .btn--projects { background: var(--cream); color: var(--ink); }
-    .btn--projects:hover { background: #fff; }
+    /* O mais discreto dos três: leva para fora da página */
+    .btn--projects {
+      border: 1px solid rgba(248, 241, 224, .28);
+      background: transparent;
+      color: var(--cream-muted);
+      font-size: .9375rem;
+      font-weight: 500;
+      box-shadow: none;
+    }
+    .btn--projects:hover { border-color: rgba(248, 241, 224, .55); color: var(--cream); }
+    .btn--projects .btn__icon { width: 24px; height: 24px; }
+    .btn--projects .btn__trail { width: 16px; height: 16px; }
 
     .note {
-      margin-top: 8px;
+      margin-bottom: 8px;
       font-size: .9375rem;
       font-style: italic;
       line-height: 1.3;
       color: var(--cream-muted);
+      opacity: .75;
     }
     .btn--projects { margin-top: 14px; }
-
-    .btn--quiz { background: var(--gold); color: var(--green-950); margin-bottom: 4px; cursor: pointer; border: 0; width: 100%; }
-    .btn--quiz:hover { background: #e6b556; }
-    .btn--projects { margin-top: 14px; }
-    .tip {
-      margin-top: 8px;
-      padding: 10px 12px;
-      border: 1px solid rgba(217, 164, 65, .45);
-      border-radius: 12px;
-      background: rgba(6, 40, 27, .55);
-      font-family: var(--sans);
-      font-size: .875rem;
-      font-weight: 500;
-      line-height: 1.35;
-      color: var(--cream);
-      text-align: left;
-    }
-    .tip strong { color: var(--gold); font-weight: 600; }
-
-    /* Empreendimentos (aparece só quando houver itens no script) */
-    .listings { width: 100%; max-width: 380px; margin-top: 26px; }
-    .listings[hidden] { display: none; }
-    .listings h2 { font-size: 1.25rem; font-weight: 500; color: var(--gold); margin-bottom: 10px; }
-    .card {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 12px;
-      overflow: hidden;
-      border-radius: 16px;
+    /* Discreto: fundo claro, compacto e sem sombra */
+    .btn--ghost {
+      gap: 10px;
       background: var(--cream);
       color: var(--ink);
-      text-align: left;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, .3);
+      font-size: .9375rem;
+      font-weight: 500;
+      box-shadow: none;
     }
-    .card img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
-    .card__body { padding: 12px 14px 14px; font-family: var(--sans); }
-    .card__name { font-family: var(--serif); font-size: 1.25rem; font-weight: 500; }
-    .card__meta { margin-top: 2px; font-size: .875rem; font-weight: 500; color: #3d5448; }
-    .card__price { margin-top: 6px; font-size: .9375rem; font-weight: 600; }
-    .card__perk { margin-top: 2px; font-size: .8125rem; font-style: italic; color: #3d5448; }
-    .card__cta {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 10px; min-height: 46px; border-radius: 12px;
-      background: var(--whatsapp); color: #fff; text-decoration: none;
-      font-size: .9375rem; font-weight: 600;
-    }
-    .card__cta:hover { background: var(--whatsapp-hover); }
-    .card__cta svg { width: 20px; height: 20px; }
-    .card__site { display: block; margin-top: 8px; font-size: .8125rem; color: #3d5448; text-align: center; }
+    .btn--ghost:hover { background: #fff; }
+    .quiz .btn--ghost .btn__icon { width: 18px; height: 18px; }
+    .btn--gold { background: var(--gold); color: var(--green-950); }
+    .btn--gold:hover { background: #e6b556; }
 
-    /* Botão flutuante de WhatsApp */
-    .fab {
-      position: fixed;
-      z-index: 20;
-      right: max(16px, env(safe-area-inset-right));
-      bottom: max(16px, env(safe-area-inset-bottom));
-      display: grid;
-      place-items: center;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: var(--whatsapp);
-      color: #fff;
-      box-shadow: 0 8px 22px rgba(0, 0, 0, .45);
-      transition: transform .15s ease;
+    /* Secundário: só contorno dourado, abaixo do WhatsApp na hierarquia */
+    .btn--quiz {
+      width: 100%;
+      margin-top: 14px;
+      border: 1.5px solid var(--gold);
+      background: transparent;
+      color: var(--gold);
+      box-shadow: none;
+      cursor: pointer;
     }
-    .fab:hover { transform: scale(1.06); }
-    .fab:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
-    .fab svg { width: 32px; height: 32px; }
+    .btn--quiz:hover { background: rgba(217, 164, 65, .12); }
+
+    /* Botão de WhatsApp do aviso ao voltar do site */
+    .toast__cta {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 12px; min-height: 48px; border-radius: var(--radius-sm);
+      background: var(--whatsapp); color: #fff; text-decoration: none;
+      font-family: var(--sans); font-size: .9375rem; font-weight: 600;
+      transition: background-color .15s var(--ease);
+    }
+    .toast__cta:hover { background: var(--whatsapp-hover); }
+    .toast__cta:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+    .toast__cta svg { width: 20px; height: 20px; }
 
     /* Aviso ao voltar do site */
     .toast {
@@ -360,18 +366,18 @@
       top: 50%;
       width: min(92vw, 420px);
       padding: 16px;
-      border-radius: 16px;
+      border-radius: var(--radius-lg);
       background: var(--cream);
       color: var(--ink);
       font-family: var(--sans);
       text-align: left;
-      box-shadow: 0 14px 36px rgba(0, 0, 0, .5);
-      transform: translate(-50%, calc(-50% + 24px));
+      box-shadow: var(--shadow-lg);
+      transform: translate(-50%, -50%);
       opacity: 0;
       pointer-events: none;
-      transition: opacity .25s ease, transform .25s ease;
+      transition: opacity .3s var(--ease);
     }
-    .toast.is-open { opacity: 1; transform: translate(-50%, -50%); pointer-events: auto; }
+    .toast.is-open { opacity: 1; pointer-events: auto; }
     .scrim {
       position: fixed;
       inset: 0;
@@ -379,12 +385,11 @@
       background: rgba(0, 0, 0, .75);
       opacity: 0;
       pointer-events: none;
-      transition: opacity .25s ease;
+      transition: opacity .3s var(--ease);
     }
     .scrim.is-open { opacity: 1; pointer-events: auto; }
     .toast p { font-size: .9375rem; font-weight: 500; line-height: 1.35; padding-right: 22px; }
     .toast p strong { font-weight: 600; }
-    .toast .card__cta { margin-top: 12px; }
     .toast__close {
       position: absolute; top: 6px; right: 6px; width: 32px; height: 32px;
       border: 0; border-radius: 50%; background: transparent; color: var(--ink);
@@ -397,8 +402,9 @@
       max-height: 92svh;
       margin: auto;
       padding: 22px 20px 20px;
-      border: 1px solid var(--gold);
-      border-radius: 20px;
+      border: 1px solid rgba(217, 164, 65, .6);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
       background: var(--green-950);
       color: var(--cream);
       font-family: var(--sans);
@@ -410,21 +416,13 @@
     html:has(dialog[open]),
     html:has(dialog[open]) body { overflow: hidden; }
     dialog.quiz::backdrop { background: rgba(0, 0, 0, .65); }
-    /* Animação de entrada dos modais */
-    dialog.quiz[open] { animation: dlgIn .3s cubic-bezier(.2, .8, .2, 1); }
-    dialog.quiz[open]::backdrop { animation: dlgFade .3s ease-out; }
-    @keyframes dlgIn {
-      from { opacity: 0; transform: translateY(18px) scale(.96); }
-      to { opacity: 1; transform: none; }
-    }
+    /* Modais: só um fade curto na entrada e na saída */
+    dialog.quiz[open],
+    dialog.quiz[open]::backdrop { animation: dlgFade .3s var(--ease); }
+    /* Saída (classe aplicada pelo JS antes de fechar) */
+    dialog.quiz[open].is-closing,
+    dialog.quiz[open].is-closing::backdrop { animation: dlgFadeOut .3s var(--ease) forwards; }
     @keyframes dlgFade { from { opacity: 0; } to { opacity: 1; } }
-    /* Animação de saída (classe aplicada pelo JS antes de fechar) */
-    dialog.quiz[open].is-closing { animation: dlgOut .25s ease-in forwards; }
-    dialog.quiz[open].is-closing::backdrop { animation: dlgFadeOut .25s ease-in forwards; }
-    @keyframes dlgOut {
-      from { opacity: 1; transform: none; }
-      to { opacity: 0; transform: translateY(18px) scale(.96); }
-    }
     @keyframes dlgFadeOut { from { opacity: 1; } to { opacity: 0; } }
     @media (prefers-reduced-motion: reduce) {
       dialog.quiz[open], dialog.quiz[open]::backdrop,
@@ -432,15 +430,15 @@
     }
     .quiz h2 { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; line-height: 1.15; padding-right: 28px; }
     .quiz__sub { margin-top: 4px; font-size: .875rem; color: var(--cream-muted); }
-    .quiz fieldset { margin-top: 16px; padding: 0; border: 0; min-width: 0; }
-    .quiz legend { margin-bottom: 8px; padding: 0; font-size: .9375rem; font-weight: 600; color: var(--gold); }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .quiz fieldset { margin-top: 12px; padding: 0; border: 0; min-width: 0; }
+    .quiz legend { margin-bottom: 6px; padding: 0; font-size: .875rem; font-weight: 600; color: var(--gold); }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
     .chips input { position: absolute; opacity: 0; pointer-events: none; }
     .chips label {
-      padding: 10px 14px;
+      padding: 7px 12px;
       border: 1.5px solid rgba(248, 241, 224, .35);
-      border-radius: 999px;
-      font-size: .9375rem;
+      border-radius: var(--radius-sm);
+      font-size: .875rem;
       font-weight: 500;
       cursor: pointer;
     }
@@ -448,22 +446,38 @@
     .chips input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; }
     .quiz input[type="text"] {
       width: 100%; padding: 12px 14px; border: 1.5px solid rgba(248, 241, 224, .35);
-      border-radius: 12px; background: rgba(255, 255, 255, .06); color: var(--cream);
+      border-radius: var(--radius-sm); background: rgba(255, 255, 255, .06); color: var(--cream);
       font: inherit; font-size: 1rem;
     }
     .quiz input[type="text"]::placeholder { color: rgba(248, 241, 224, .5); }
-    .quiz .btn { margin-top: 20px; width: 100%; justify-content: center; border: 0; cursor: pointer; }
+    /* Botões dentro dos modais: altura única de 48px */
+    .quiz .btn {
+      min-height: 48px; margin-top: 20px; width: 100%; padding: 8px 16px; gap: 10px;
+      justify-content: center; border: 0; font-size: .9375rem; cursor: pointer;
+    }
+    .quiz .btn .btn__icon { width: 22px; height: 22px; }
     .quiz__close {
       position: absolute; top: 10px; right: 10px; width: 36px; height: 36px;
       border: 0; border-radius: 50%; background: transparent; color: var(--cream);
       font-size: 1.5rem; line-height: 1; cursor: pointer;
     }
+    .dlg-text { margin-top: 10px; font-size: 1rem; line-height: 1.4; color: var(--cream); }
+    .dlg-text strong { color: var(--gold); }
+    .text-link {
+      display: block; margin-top: 14px; text-align: center;
+      font-size: .9375rem; color: var(--cream-muted); text-decoration: underline; text-underline-offset: 3px;
+    }
+    .text-link:hover { color: var(--cream); }
+    .about .quiz__sub { text-align: center; }
+    .stars-legend { width: 100%; text-align: center; }
+    .quiz__other { margin-top: 8px; }
+    .quiz__other[hidden] { display: none; }
     .quiz__priv { margin-top: 10px; font-size: .75rem; text-align: center; color: var(--cream-muted); }
 
     /* Avaliação da página */
     .feedback-link {
-      margin-top: 22px;
-      padding: 8px 10px;
+      margin: -4px 0 0;
+      padding: 8px 10px 8px 0;
       border: 0;
       background: none;
       color: var(--cream-muted);
@@ -474,7 +488,7 @@
       cursor: pointer;
     }
     .feedback-link:hover { color: var(--cream); }
-    .feedback-link:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 6px; }
+    .feedback-link:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: var(--radius-sm); }
     .stars { display: flex; flex-direction: row-reverse; justify-content: center; gap: 2px; }
     .stars input { position: absolute; opacity: 0; pointer-events: none; }
     .stars label {
@@ -488,10 +502,48 @@
     .stars input:checked ~ label,
     .stars label:hover,
     .stars label:hover ~ label { color: var(--gold); }
-    .stars input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: 8px; }
+    /* Troca de tela dentro do modal: mesmo fade de abrir e fechar */
+    .dlg-view { animation: dlgFade .3s var(--ease); }
+    .dlg-view.is-leaving { animation: dlgFadeOut .3s var(--ease) forwards; pointer-events: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .dlg-view, .dlg-view.is-leaving { animation: none; }
+    }
+
+    /* Agradecimento: o círculo e o certinho se desenham, como a casinha do pré-loader */
+    .thanks { padding: 10px 0 6px; text-align: center; }
+    .thanks__mark { display: block; width: 72px; height: 72px; margin: 0 auto 16px; color: var(--gold); }
+    .thanks__mark circle,
+    .thanks__mark path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+    .thanks:not([hidden]) .thanks__mark circle { animation: loaderDraw .7s var(--ease) forwards; }
+    .thanks:not([hidden]) .thanks__mark path { animation: loaderDraw .4s var(--ease) .55s forwards; }
+    .thanks h2,
+    .thanks p { opacity: 0; }
+    .thanks:not([hidden]) h2 { animation: loaderFade .5s var(--ease) .75s forwards; }
+    .about .thanks p { text-align: center; }
+    .thanks:not([hidden]) p { animation: loaderFade .5s var(--ease) .9s forwards; }
+    @media (prefers-reduced-motion: reduce) {
+      .thanks__mark circle, .thanks__mark path { animation: none !important; stroke-dashoffset: 0; }
+      .thanks h2, .thanks p { animation: none !important; opacity: 1; }
+    }
+
+    /* Ao escolher a nota, as estrelas acendem da esquerda para a direita */
+    .stars label.is-pop {
+      display: inline-block;
+      animation: starPop .36s var(--ease) both;
+      animation-delay: var(--d, 0s);
+    }
+    @keyframes starPop {
+      0% { transform: scale(.85); color: rgba(248, 241, 224, .3); }
+      50% { transform: scale(1.18); color: var(--gold); }
+      100% { transform: scale(1); color: var(--gold); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .stars label.is-pop { animation: none; }
+    }
+    .stars input:focus-visible + label { outline: 3px solid var(--gold); outline-offset: 2px; border-radius: var(--radius-sm); }
     .quiz textarea {
       width: 100%; min-height: 96px; padding: 12px 14px; resize: vertical;
-      border: 1.5px solid rgba(248, 241, 224, .35); border-radius: 12px;
+      border: 1.5px solid rgba(248, 241, 224, .35); border-radius: var(--radius-sm);
       background: rgba(255, 255, 255, .06); color: var(--cream); font: inherit; font-size: 1rem;
     }
     .quiz textarea::placeholder { color: rgba(248, 241, 224, .5); }
@@ -511,9 +563,9 @@
       gap: 16px;
       background: var(--green-950);
       color: var(--gold);
-      transition: opacity .45s ease, visibility .45s ease;
+      transition: opacity .3s var(--ease), visibility .3s var(--ease);
       /* Garantia: se o script falhar, some sozinho depois de 4s */
-      animation: loaderFailsafe .45s ease 5s forwards;
+      animation: loaderFailsafe .3s ease 4s forwards;
     }
     .loader.is-done { opacity: 0; visibility: hidden; }
     .loader__mark { display: flex; align-items: center; gap: 16px; }
@@ -524,38 +576,67 @@
       height: 1px;
       background: linear-gradient(to right, transparent, var(--gold));
       transform: scaleX(0);
-      animation: loaderLine .9s ease .5s forwards;
+      animation: loaderLine .5s var(--ease) .2s forwards;
     }
     .loader__mark::before { transform-origin: right; }
     .loader__mark::after { transform-origin: left; background: linear-gradient(to left, transparent, var(--gold)); }
     @keyframes loaderLine { to { transform: scaleX(1); } }
-    .loader svg { width: 72px; height: 72px; }
-    .loader svg path {
+    .loader__mark svg { width: 72px; height: 72px; }
+    .loader__mark svg path {
       stroke-dasharray: 1;
       stroke-dashoffset: 1;
-      animation: loaderDraw 1.1s ease forwards;
+      animation: loaderDraw .6s var(--ease) forwards;
     }
-    .loader svg path:nth-child(2) { animation-delay: .15s; }
-    .loader svg path:nth-child(3) { animation-delay: .3s; }
-    .loader svg path:nth-child(4) { animation-delay: .45s; }
+    .loader__mark svg path:nth-child(2) { animation-delay: .08s; }
+    .loader__mark svg path:nth-child(3) { animation-delay: .16s; }
+    .loader__mark svg path:nth-child(4) { animation-delay: .24s; }
     .loader__name {
       font-size: 1.25rem;
       letter-spacing: .12em;
       text-transform: uppercase;
       color: var(--cream);
       opacity: 0;
-      animation: loaderFade .6s ease .5s forwards;
+      animation: loaderFade .4s var(--ease) .2s forwards;
+    }
+    .loader__role {
+      margin-top: -10px;
+      font-family: var(--sans);
+      font-size: .6875rem;
+      font-weight: 500;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      color: var(--cream-muted);
+      opacity: 0;
+      animation: loaderFade .4s var(--ease) .45s forwards;
+    }
+    /* Linha que se preenche no tempo restante (termina junto com o mínimo de 1,8s) */
+    .loader__bar {
+      position: relative;
+      width: 160px;
+      height: 1px;
+      margin-top: 6px;
+      background: rgba(217, 164, 65, .18);
+      overflow: hidden;
+    }
+    .loader__bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: loaderLine 1.2s var(--ease) .6s forwards;
     }
     @keyframes loaderDraw { to { stroke-dashoffset: 0; } }
     @keyframes loaderFade { to { opacity: 1; } }
     @keyframes loaderFailsafe { to { opacity: 0; visibility: hidden; } }
 
     @media (prefers-reduced-motion: reduce) {
-      .loader svg path { animation: none; stroke-dashoffset: 0; }
+      .loader__mark svg path { animation: none; stroke-dashoffset: 0; }
       .loader__mark::before, .loader__mark::after { animation: none; transform: none; }
-      .loader__name { animation: none; opacity: 1; }
-      .btn, .fab, .toast { transition: none; }
-      .btn:hover, .fab:hover { transform: none; }
+      .loader__name, .loader__role { animation: none; opacity: 1; }
+      .loader__bar::after { animation: none; transform: none; }
+      .btn, .toast__cta, .toast, .scrim { transition: none; }
     }
 
     /* Computador: conteúdo à esquerda, prédio à direita */
@@ -607,6 +688,8 @@
       </svg>
     </div>
     <div class="loader__name">Rickelmyn</div>
+    <div class="loader__role">Consultor de Vendas</div>
+    <div class="loader__bar"></div>
   </div>
 
   <div class="backdrop" aria-hidden="true">
@@ -624,49 +707,56 @@
     </div>
 
     <button type="button" class="portrait-btn" id="openAbout" aria-label="Quem sou eu: saiba mais sobre o Rickelmyn">
-      <img class="portrait" src="IMG/EU.jpeg" alt="Foto de Rickelmyn" width="1254" height="1254">
+      <img class="portrait" src="IMG/eu.webp" alt="Foto de Rickelmyn" width="400" height="400">
       <span class="portrait-btn__badge" aria-hidden="true">SOBRE MIM</span>
     </button>
 
-    <h2 class="name">Rickelmyn</h2>
-    <p class="role">Consultor de Vendas</p>
+    <p class="name">Rickelmyn | Consultor de Vendas</p>
 
-    <hr class="rule">
+    <div class="rule-row">
+      <abbr class="seal" title="Uso do FGTS"><svg class="seal__check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg>FGTS</abbr>
+      <hr class="rule">
+      <abbr class="seal" title="Minha Casa, Minha Vida">MCMV<svg class="seal__check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 8.5 3.2 3L13 4.5"/></svg></abbr>
+    </div>
 
-    <h1 class="headline">Seu próximo lar começa aqui.</h1>
-    <p class="lead">Encontre o imóvel ideal com quem entende de você.</p>
+    <h1 class="headline">Apartamentos que cabem no seu orçamento.</h1>
+    <p class="lead">Para o seu momento, em São Paulo e região.</p>
 
     <div class="actions">
+      <p class="note">Atendimento direto comigo pelo WhatsApp.</p>
       <a class="btn btn--whatsapp"
          href="https://wa.me/5511964870961?text=Ol%C3%A1%2C%20Rickelmyn!%20Vim%20pela%20sua%20p%C3%A1gina%20e%20quero%20saber%20mais%20sobre%20os%20apartamentos."
          target="_blank" rel="noopener">
         <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
         </svg>
-        <span class="btn__label">Fale comigo, o seu consultor</span>
+        <span class="btn__label">Falar no WhatsApp.</span>
         <svg class="btn__trail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M4 12h16M14 6l6 6-6 6"/>
         </svg>
       </a>
-      <p class="note">Prefere falar com uma pessoa? Me chama no WhatsApp.</p>
+      <button type="button" class="btn btn--quiz" id="openQuiz">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="10.5" cy="10.5" r="6.5"/>
+          <path d="m20 20-4.8-4.8"/>
+        </svg>
+        <span class="btn__label">Encontrar imóvel ideal.</span>
+        <svg class="btn__trail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 12h16M14 6l6 6-6 6"/>
+        </svg>
+      </button>
 
       <a class="btn btn--projects" id="siteLink" href="https://mundoapto.com.br/imoveis/" target="_blank" rel="noopener">
         <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M2 21.5h20M4 21.5V10h6v11.5M10 21.5V3h10v18.5"/>
           <path d="M13 7h1M16.5 7h1M13 11h1M16.5 11h1M13 15h1M16.5 15h1M6.5 14h1M6.5 17.5h1"/>
         </svg>
-        <span class="btn__label">Conheça os projetos Mundo Apto</span>
+        <span class="btn__label">Ver imóveis no site da Mundo Apto.</span>
         <svg class="btn__trail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M14 4h6v6M20 4l-9 9M18 14v6H4V6h6"/>
         </svg>
       </a>
     </div>
-
-    <section class="listings" id="listings" hidden aria-labelledby="listingsTitle">
-      <h2 id="listingsTitle">Empreendimentos em destaque</h2>
-      <div id="cards"></div>
-    </section>
-
 
   </main>
 
@@ -675,9 +765,9 @@
   <div class="toast" id="toast" role="status" aria-live="polite">
     <button type="button" class="toast__close" id="toastClose" aria-label="Fechar">&times;</button>
     <p><strong>Gostou de algum imóvel?</strong> Me conta qual e eu te mando valores, plantas e condições aqui no WhatsApp.</p>
-    <a class="card__cta" id="toastCta" href="#" target="_blank" rel="noopener">
+    <a class="toast__cta" id="toastCta" href="#" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>
-      Chamar no WhatsApp
+      Chamar no WhatsApp.
     </a>
   </div>
 
@@ -686,30 +776,27 @@
   <dialog class="quiz about" id="about" aria-labelledby="aboutTitle">
     <button type="button" class="quiz__close" id="aboutClose" aria-label="Fechar">&times;</button>
 
-    <div id="aboutView">
-      <img class="about__photo" src="IMG/EU.jpeg" alt="" width="96" height="96">
-      <h2 id="aboutTitle">Quem sou eu</h2>
-      <p>Olá, eu sou o Rickelmyn, consultor de vendas de imóveis da Mundo Apto.</p>
+    <div class="dlg-view" id="aboutView">
+      <img class="about__photo" src="IMG/sobre-mim.webp" alt="" width="400" height="400" loading="lazy" decoding="async">
+      <h2 id="aboutTitle">Quem sou eu?</h2>
+      <p>Fala pessoal tudo bem?, prazer eu me chamo Rickelmyn, consultor de vendas de imóveis da empresa Mundo Apto.</p>
       <p>Meu trabalho é te ajudar a encontrar o imóvel certo para o seu momento, com atendimento próximo e transparente, do primeiro contato até a entrega das chaves.</p>
       <p>Me conta o que você procura e eu cuido do resto.</p>
-      <button type="button" class="btn btn--projects" id="openFeedback" style="width:100%;margin-top:18px;border:0;cursor:pointer">
-        <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <button type="button" class="btn btn--ghost" id="openFeedback">
+        <svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true">
           <path d="m12 2.5 2.9 6 6.6.9-4.8 4.6 1.2 6.5L12 17.4l-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/>
         </svg>
-        <span class="btn__label">Deixe sua avaliação ou sugestão sobre esta página</span>
-        <svg class="btn__trail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M4 12h16M14 6l6 6-6 6"/>
-        </svg>
+        Avalie a qualidade desta página.
       </button>
     </div>
 
-    <div id="fbFormView" hidden>
-      <button type="button" class="feedback-link" id="fbBack" style="margin:-4px 0 0;padding-left:0">&larr; Voltar</button>
+    <div class="dlg-view" id="fbFormView" hidden>
+      <button type="button" class="feedback-link" id="fbBack">&larr; Voltar</button>
       <h2 id="fbTitle">O que achou desta página?</h2>
-      <p class="quiz__sub" style="text-align:center">Sua opinião me ajuda a melhorar. Leva menos de 1 minuto.</p>
+      <p class="quiz__sub">Sua opinião me ajuda a melhorar. Leva menos de 1 minuto.</p>
       <form id="fbForm">
         <fieldset>
-          <legend style="text-align:center;width:100%">Sua nota</legend>
+          <legend class="stars-legend">Sua nota.</legend>
           <div class="stars">
             <input type="radio" name="nota" id="s5" value="5" required><label for="s5" title="5 estrelas" aria-label="5 estrelas">★</label>
             <input type="radio" name="nota" id="s4" value="4"><label for="s4" title="4 estrelas" aria-label="4 estrelas">★</label>
@@ -719,17 +806,21 @@
           </div>
         </fieldset>
         <fieldset>
-          <legend>Sugestão de ajuste ou erro que encontrou (opcional)</legend>
+          <legend>Sugestão de ajuste ou erro que encontrou ou elogios do meu atendimento e pontos a melhorar (opcional).</legend>
           <textarea name="mensagem" id="fbMsg" maxlength="1000" placeholder="Ex.: o botão X não funcionou no meu celular…"></textarea>
         </fieldset>
         <!-- Campo-isca contra robôs: não preencher -->
         <div class="fb-hp" aria-hidden="true"><input type="text" name="botcheck" tabindex="-1" autocomplete="off"></div>
         <p class="fb-error" id="fbError" role="alert" hidden>Não consegui enviar agora. Tente de novo em instantes.</p>
-        <button type="submit" class="btn btn--projects" id="fbSend" style="justify-content:center;margin-top:20px;width:100%;border:0;cursor:pointer;background:var(--gold);color:var(--green-950)">Enviar avaliação</button>
+        <button type="submit" class="btn btn--gold" id="fbSend">Enviar avaliação.</button>
       </form>
     </div>
 
-    <div id="fbThanksView" hidden>
+    <div class="dlg-view thanks" id="fbThanksView" hidden>
+      <svg class="thanks__mark" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle pathLength="1" cx="32" cy="32" r="29"/>
+        <path pathLength="1" d="M20 33.5 28 41l16-17"/>
+      </svg>
       <h2>Muito obrigado!</h2>
       <p>Sua opinião ajuda muito.</p>
     </div>
@@ -738,54 +829,73 @@
   <!-- Dica antes de ir ao site -->
   <dialog class="quiz" id="siteTip" aria-labelledby="tipTitle">
     <button type="button" class="quiz__close" id="tipClose" aria-label="Fechar">&times;</button>
-    <h2 id="tipTitle">Antes de ir ao site</h2>
-    <p class="quiz__sub" style="font-size:1rem;line-height:1.4;margin-top:10px;color:var(--cream)">
-      Fique à vontade para conhecer o site! Só um detalhe: ao se cadastrar lá, <strong style="color:var(--gold)">você será atendido por um dos nossos outros corretores</strong>, e não por mim.
-    </p>
-    <p class="quiz__sub" style="font-size:1rem;line-height:1.4;margin-top:10px;color:var(--cream)">Se quiser o meu atendimento, é só me chamar no WhatsApp: eu te envio <strong style="color:var(--gold)">tabela de preços, plantas e simulação</strong> com todo o cuidado. Ou anote o que gostou e volte aqui para me contar.</p>
-    <a class="btn btn--whatsapp" id="tipWa" href="#" target="_blank" rel="noopener" style="justify-content:center;margin-top:18px">
+    <h2 id="tipTitle">Um aviso rápido.</h2>
+    <p class="dlg-text">Fique à vontade para conhecer o site! Só um detalhe: ao se cadastrar lá, <strong>você será atendido por outro corretor</strong>, e não por mim.</p>
+    <p class="dlg-text">Se quiser o meu atendimento, é só me chamar no WhatsApp.</p>
+    <a class="btn btn--whatsapp" id="tipWa" href="#" target="_blank" rel="noopener">
       <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>
-      Prefiro falar no WhatsApp
+      Prefiro falar no WhatsApp.
     </a>
-    <a id="tipGo" href="#" target="_blank" rel="noopener"
-       style="display:block;margin-top:14px;text-align:center;font-size:.9375rem;color:var(--cream-muted);text-decoration:underline">Ir ao site mesmo assim</a>
+    <a class="text-link" id="tipGo" href="#" target="_blank" rel="noopener">Continuar para o site.</a>
   </dialog>
 
   <!-- Perguntas rápidas -->
   <dialog class="quiz" id="quiz" aria-labelledby="quizTitle">
     <button type="button" class="quiz__close" id="quizClose" aria-label="Fechar">&times;</button>
     <h2 id="quizTitle">Qual apê combina com você?</h2>
-    <p class="quiz__sub">Responda e eu já te chamo com as melhores opções.</p>
+    <p class="quiz__sub">Responda só o que quiser e me envie pelo WhatsApp.</p>
     <form id="quizForm">
       <fieldset>
-        <legend>Faixa de valor</legend>
+        <legend>Valor.</legend>
         <div class="chips">
-          <input type="radio" name="valor" id="v1" value="até R$ 250 mil"><label for="v1">Até R$ 250 mil</label>
-          <input type="radio" name="valor" id="v2" value="entre R$ 250 mil e R$ 400 mil"><label for="v2">R$ 250 a 400 mil</label>
-          <input type="radio" name="valor" id="v3" value="entre R$ 400 mil e R$ 600 mil"><label for="v3">R$ 400 a 600 mil</label>
-          <input type="radio" name="valor" id="v4" value="acima de R$ 600 mil"><label for="v4">Acima de R$ 600 mil</label>
+          <input type="radio" name="valor" id="v1" value="até R$ 250 mil"><label for="v1">Até 250 mil</label>
+          <input type="radio" name="valor" id="v2" value="entre R$ 250 mil e R$ 400 mil"><label for="v2">250 a 400 mil</label>
+          <input type="radio" name="valor" id="v3" value="entre R$ 400 mil e R$ 600 mil"><label for="v3">400 a 600 mil</label>
+          <input type="radio" name="valor" id="v4" value="acima de R$ 600 mil"><label for="v4">600 mil +</label>
         </div>
       </fieldset>
       <fieldset>
-        <legend>Quartos</legend>
+        <legend>FGTS ou Minha Casa, Minha Vida?</legend>
+        <div class="chips">
+          <input type="radio" name="programa" id="p1" value="quero usar FGTS ou Minha Casa, Minha Vida"><label for="p1">Sim</label>
+          <input type="radio" name="programa" id="p2" value="sem FGTS ou Minha Casa, Minha Vida"><label for="p2">Não</label>
+          <input type="radio" name="programa" id="p3" value="não sei se tenho direito a FGTS ou Minha Casa, Minha Vida"><label for="p3">Não sei</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Tipo de imóvel.</legend>
         <div class="chips">
           <input type="radio" name="quartos" id="q0" value="studio"><label for="q0">Studio</label>
-          <input type="radio" name="quartos" id="q1" value="1 quarto"><label for="q1">1</label>
-          <input type="radio" name="quartos" id="q2" value="2 quartos"><label for="q2">2</label>
-          <input type="radio" name="quartos" id="q3" value="3 ou mais quartos"><label for="q3">3 ou mais</label>
+          <input type="radio" name="quartos" id="q1" value="1 quarto"><label for="q1">1 Dorm</label>
+          <input type="radio" name="quartos" id="q2" value="2 quartos"><label for="q2">2 Dorms</label>
+          <input type="radio" name="quartos" id="q3" value="3 ou mais quartos"><label for="q3">3 Dorms ou +</label>
         </div>
       </fieldset>
       <fieldset>
-        <legend>Região de preferência</legend>
-        <input type="text" name="regiao" id="regiao" placeholder="Ex.: Zona Leste, Centro, perto do metrô" maxlength="80" autocomplete="off">
+        <legend>Região.</legend>
+        <div class="chips">
+          <input type="radio" name="zona" id="z1" value="Zona Leste"><label for="z1">Leste</label>
+          <input type="radio" name="zona" id="z2" value="Zona Norte"><label for="z2">Norte</label>
+          <input type="radio" name="zona" id="z3" value="Zona Sul"><label for="z3">Sul</label>
+          <input type="radio" name="zona" id="z4" value="Zona Oeste"><label for="z4">Oeste</label>
+          <input type="radio" name="zona" id="z5" value="Centro"><label for="z5">Centro</label>
+          <input type="radio" name="zona" id="z6" value="outra"><label for="z6">Outra</label>
+        </div>
+        <input type="text" class="quiz__other" name="regiao" id="regiao" placeholder="Qual região ou bairro?" maxlength="80" autocomplete="off" hidden>
+      </fieldset>
+      <fieldset>
+        <legend>Quando pretende comprar?</legend>
+        <div class="chips">
+          <input type="radio" name="prazo" id="t1" value="pretendo comprar agora"><label for="t1">Agora</label>
+          <input type="radio" name="prazo" id="t2" value="pretendo comprar em até 6 meses"><label for="t2">Até 6 meses</label>
+          <input type="radio" name="prazo" id="t3" value="estou só pesquisando por enquanto"><label for="t3">Pesquisando</label>
+        </div>
       </fieldset>
       <button type="submit" class="btn btn--whatsapp">
         <svg class="btn__icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>
-        Enviar no WhatsApp
+        Enviar no WhatsApp.
       </button>
-      <a id="quizSkip" href="#" target="_blank" rel="noopener"
-         style="display:block;margin-top:14px;text-align:center;font-size:.9375rem;color:var(--cream-muted);text-decoration:underline">Pular e ir direto ao WhatsApp</a>
-      <p class="quiz__priv">Nada é guardado aqui: suas respostas vão direto na mensagem para mim.</p>
+      <p class="quiz__priv">Nada fica salvo aqui. Somente envia ao WhatsApp.</p>
     </form>
   </dialog>
 
@@ -795,7 +905,7 @@
 
   <script>
     (function () {
-      // Pré-loader: some quando a página carrega (mínimo 2,2s, máximo 4s)
+      // Pré-loader: some quando a página carrega (mínimo 1,8s, máximo 3,5s)
       var loader = document.getElementById("loader");
       var t0 = Date.now(), hidden = false;
       var hideLoader = function () {
@@ -804,11 +914,11 @@
         loader.classList.add("is-done");
       };
       var onReady = function () {
-        setTimeout(hideLoader, Math.max(0, 2200 - (Date.now() - t0)));
+        setTimeout(hideLoader, Math.max(0, 1800 - (Date.now() - t0)));
       };
       if (document.readyState === "complete") onReady();
       else window.addEventListener("load", onReady);
-      setTimeout(hideLoader, 4000);
+      setTimeout(hideLoader, 3500);
 
       var PHONE = "5511964870961";
       var wa = function (text) {
@@ -833,7 +943,7 @@
           };
           d._fin = fin;
           d.addEventListener("animationend", function (ev) { if (ev.target === d) fin(); }, { once: true });
-          setTimeout(fin, 350);
+          setTimeout(fin, 400);
         };
         proto.showModal = function () {
           if (this._fin) this._fin(); // fechamento em andamento: conclui antes de reabrir
@@ -846,41 +956,6 @@
         }, true);
       })();
 
-      /* ====== EMPREENDIMENTOS ======
-         Preencha esta lista e a seção aparece sozinha. Exemplo:
-         { nome: "Residencial Exemplo", local: "Bairro, Cidade", meta: "2 quartos · 45 m²",
-           preco: "A partir de R$ 250 mil", destaque: "Entrega 2027",
-           foto: "IMG/exemplo.jpg", site: "https://mundoapto.com.br/imoveis/exemplo" }
-      */
-      var EMPREENDIMENTOS = [];
-
-
-      // Cards
-      var esc = function (s) {
-        return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) {
-          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
-        });
-      };
-      if (EMPREENDIMENTOS.length) {
-        var html = EMPREENDIMENTOS.map(function (e) {
-          var msg = "Olá, Rickelmyn! Vim pela sua página e quero saber mais sobre o " + e.nome + ".";
-          return '<article class="card">' +
-            (e.foto ? '<img src="' + esc(e.foto) + '" alt="' + esc(e.nome) + '" loading="lazy">' : "") +
-            '<div class="card__body">' +
-            '<h3 class="card__name">' + esc(e.nome) + "</h3>" +
-            '<p class="card__meta">' + esc([e.local, e.meta].filter(Boolean).join(" · ")) + "</p>" +
-            (e.preco ? '<p class="card__price">' + esc(e.preco) + "</p>" : "") +
-            (e.destaque ? '<p class="card__perk">' + esc(e.destaque) + "</p>" : "") +
-            '<a class="card__cta" href="' + wa(msg) + '" target="_blank" rel="noopener">' +
-            '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><use href="#wa"/></svg>' +
-            "Quero saber mais</a>" +
-            (e.site ? '<a class="card__site js-site" href="' + esc(e.site) + '" target="_blank" rel="noopener">Ver no site da Mundo Apto</a>' : "") +
-            "</div></article>";
-        }).join("");
-        document.getElementById("cards").innerHTML = html;
-        document.getElementById("listings").hidden = false;
-      }
-
       // Avaliação da página (envio por e-mail via Web3Forms, sem banco de dados)
       var FEEDBACK_KEY = "4acb3ea0-c9aa-4920-b876-7b4b68d5cf6e"; // chave pública do web3forms.com
       var about = document.getElementById("about");
@@ -891,18 +966,45 @@
       var fbError = document.getElementById("fbError");
       var fbSend = document.getElementById("fbSend");
       // Alterna entre as telas do modal: sobre, avaliação e agradecimento
-      var showView = function (v) {
-        aboutView.hidden = v !== "about";
-        fbFormView.hidden = v !== "fb";
-        fbThanksView.hidden = v !== "thanks";
+      // Com animate, a tela atual some e a nova aparece com o mesmo fade dos modais
+      var views = { about: aboutView, fb: fbFormView, thanks: fbThanksView };
+      var viewTimer = null;
+      var showView = function (v, animate) {
+        clearTimeout(viewTimer);
+        var apply = function () {
+          for (var k in views) {
+            views[k].classList.remove("is-leaving");
+            views[k].hidden = k !== v;
+          }
+        };
+        var cur = null;
+        for (var k in views) if (!views[k].hidden) cur = views[k];
+        var reduced = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (!animate || reduced || !cur || cur === views[v]) return apply();
+        cur.classList.add("is-leaving");
+        viewTimer = setTimeout(apply, 300);
       };
       document.getElementById("openFeedback").addEventListener("click", function () {
         fbForm.reset();
+        fbForm.querySelectorAll(".stars label").forEach(function (lb) { lb.classList.remove("is-pop"); });
         fbError.hidden = true;
         fbSend.disabled = false;
-        showView("fb");
+        showView("fb", true);
       });
-      document.getElementById("fbBack").addEventListener("click", function () { showView("about"); });
+      document.getElementById("fbBack").addEventListener("click", function () { showView("about", true); });
+      // Animação das estrelas ao escolher a nota
+      fbForm.addEventListener("change", function (ev) {
+        if (ev.target.name !== "nota") return;
+        var n = +ev.target.value;
+        for (var i = 1; i <= 5; i++) {
+          var lb = fbForm.querySelector('label[for="s' + i + '"]');
+          lb.classList.remove("is-pop");
+          if (i > n) continue;
+          void lb.offsetWidth; // reinicia a animação
+          lb.style.setProperty("--d", (i - 1) * 0.06 + "s");
+          lb.classList.add("is-pop");
+        }
+      });
       fbForm.addEventListener("submit", function (ev) {
         ev.preventDefault();
         if (fbForm.elements.botcheck.value) return; // robô
@@ -911,9 +1013,9 @@
         fbSend.textContent = "Enviando...";
         var nota = fbForm.elements.nota.value;
         var done = function (ok) {
-          fbSend.textContent = "Enviar avaliação";
+          fbSend.textContent = "Enviar avaliação.";
           if (ok) {
-            showView("thanks");
+            showView("thanks", true);
           } else {
             fbSend.disabled = false;
             fbError.hidden = false;
@@ -953,14 +1055,22 @@
       var openDlg = function (d) { if (d.showModal) d.showModal(); else d.setAttribute("open", ""); };
       document.getElementById("tipWa").href = wa("Olá, Rickelmyn! Vim pela sua página e quero ajuda para escolher um apartamento.");
       document.addEventListener("click", function (ev) {
-        var a = ev.target.closest && ev.target.closest("#siteLink, .js-site");
+        var a = ev.target.closest && ev.target.closest("#siteLink");
         if (!a) return;
-        // Sempre pergunta antes de levar ao site
+        // Avisa só na primeira vez da visita; depois vai direto ao site
+        var seen = false;
+        try { seen = sessionStorage.getItem("siteTipSeen") === "1"; } catch (e) {}
+        if (seen) { visited = true; return; }
         ev.preventDefault();
         tipGo.href = a.href;
         openDlg(tip);
       });
-      tipGo.addEventListener("click", function () { visited = true; shown = false; tip.close(); });
+      tipGo.addEventListener("click", function () {
+        visited = true;
+        shown = false;
+        try { sessionStorage.setItem("siteTipSeen", "1"); } catch (e) {}
+        tip.close();
+      });
       document.getElementById("tipClose").addEventListener("click", function () { tip.close(); });
       tip.addEventListener("click", function (ev) { if (ev.target === tip) tip.close(); });
       var onBack = function () {
@@ -984,26 +1094,22 @@
       document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") closeToast(); });
 
       // Perguntas rápidas
+      // Abre só pelo botão "Encontrar imóvel ideal"; os links de WhatsApp vão direto
       var quiz = document.getElementById("quiz");
-      var generic = "Olá, Rickelmyn! Vim pela sua página e quero saber mais sobre os apartamentos.";
-      var quizBase = generic;
-      var quizSkip = document.getElementById("quizSkip");
-      // Qualquer link de WhatsApp da página passa primeiro pelas perguntas rápidas
-      document.addEventListener("click", function (ev) {
-        var a = ev.target.closest && ev.target.closest('a[href^="https://wa.me/"]');
-        if (!a || a.closest("#quiz")) return;
-        ev.preventDefault();
-        var text = "";
-        try { text = new URL(a.href).searchParams.get("text") || ""; } catch (e) {}
-        quizBase = text || generic;
-        quizSkip.href = a.href;
-        document.getElementById("quizForm").reset();
-        tip.close();
-        about.close();
-        closeToast();
+      var quizBase = "Olá, Rickelmyn! Vim pela sua página e quero ajuda para encontrar o imóvel ideal.";
+      var quizForm = document.getElementById("quizForm");
+      var regiaoOutra = document.getElementById("regiao");
+      document.getElementById("openQuiz").addEventListener("click", function () {
+        quizForm.reset();
+        regiaoOutra.hidden = true;
         openDlg(quiz);
       });
-      quizSkip.addEventListener("click", function () { quiz.close(); });
+      // "Outra região ou bairro" abre o campo de texto
+      quizForm.addEventListener("change", function (ev) {
+        if (ev.target.name !== "zona") return;
+        regiaoOutra.hidden = ev.target.value !== "outra";
+        if (!regiaoOutra.hidden) regiaoOutra.focus();
+      });
       document.getElementById("quizClose").addEventListener("click", function () { quiz.close(); });
       quiz.addEventListener("click", function (ev) { if (ev.target === quiz) quiz.close(); });
       document.getElementById("quizForm").addEventListener("submit", function (ev) {
@@ -1011,11 +1117,16 @@
         var f = ev.target;
         var valor = (f.elements.valor.value || "").trim();
         var quartos = (f.elements.quartos.value || "").trim();
-        var regiao = (f.elements.regiao.value || "").trim();
+        var programa = f.elements.programa.value || "";
+        var zona = f.elements.zona.value || "";
+        var regiao = zona === "outra" ? (f.elements.regiao.value || "").trim() : zona;
+        var prazo = f.elements.prazo.value || "";
         var parts = [];
         if (quartos) parts.push(quartos);
         if (valor) parts.push(valor);
-        if (regiao) parts.push("região: " + regiao);
+        if (programa) parts.push(programa);
+        if (regiao) parts.push("pela região de " + regiao);
+        if (prazo) parts.push(prazo);
         var msg = quizBase + (parts.length ? " Meu perfil: " + parts.join(", ") + "." : "");
         window.open(wa(msg), "_blank", "noopener");
         quiz.close();
